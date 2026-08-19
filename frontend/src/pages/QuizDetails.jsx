@@ -1,0 +1,13 @@
+import React, { useEffect, useState } from 'react';
+import { useParams, useNavigate, Link } from 'react-router-dom';
+import api from '../api/axios';
+
+export default function QuizDetails() {
+  const { id } = useParams(); const [quiz, setQuiz] = useState(null); const [error, setError] = useState(''); const navigate = useNavigate();
+  useEffect(() => { api.get(`/quizzes/${id}`).then((res) => setQuiz(res.data)).catch((err) => setError(err.response?.data?.message || 'Could not load this quiz. Make sure the backend is running on port 5001.')); }, [id]);
+  async function handleStart() { setError(''); try { const { data } = await api.post(`/quizzes/${id}/start`); navigate(`/quizzes/${id}/attempt`, { state: { attemptId: data.id } }); } catch (err) { setError(err.response?.data?.message || 'Could not start quiz'); } }
+  if (!quiz) return <div className="empty-state" style={{ width: 'min(500px, calc(100% - 40px))', margin: '70px auto' }}>{error || 'Loading challenge...'}</div>;
+  return <main className="page-narrow"><Link to="/" className="muted" style={{ fontSize: '.8rem', fontWeight: 700 }}>← Back to library</Link><section className="soft-card" style={{ marginTop: 18, padding: 'clamp(25px, 5vw, 45px)' }}><div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 18 }}><div><p className="eyebrow">Ready when you are</p><h1 className="display-title" style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)' }}>{quiz.title}</h1></div><span className="quiz-icon" style={{ width: 54, height: 54, fontSize: '1.6rem' }}>✦</span></div><p className="muted" style={{ margin: '18px 0 0', lineHeight: 1.7 }}>{quiz.description || 'A focused challenge designed to help you learn by doing.'}</p><div className="stats-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)', marginTop: 30 }}><Detail label="Questions" value={quiz.question_count} /><Detail label="Time limit" value={`${quiz.duration_minutes} min`} /><Detail label="Pass mark" value={`${quiz.passing_score}%`} /></div>{error && <p className="auth-error" style={{ marginTop: 20 }}>{error}</p>}<button onClick={handleStart} className="btn-primary" style={{ width: '100%', marginTop: 30, minHeight: 52 }}>Start challenge <span>→</span></button><p className="muted" style={{ textAlign: 'center', fontSize: '.72rem', margin: '14px 0 0' }}>You have up to {quiz.max_attempts} attempt{quiz.max_attempts === 1 ? '' : 's'} · {quiz.difficulty.toLowerCase()} level</p></section></main>;
+}
+
+function Detail({ label, value }) { return <div><p className="muted" style={{ margin: 0, fontSize: '.7rem', fontWeight: 700 }}>{label}</p><p style={{ margin: '5px 0 0', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 700 }}>{value}</p></div>; }

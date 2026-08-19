@@ -1,0 +1,9 @@
+
+> quiz-platform-frontend@1.0.0 dev
+> vite --host 127.0.0.1
+
+
+  [32m[1mVITE[22m v5.4.21[39m  [2mready in [0m[1m5236[22m[2m[0m ms[22m
+
+  [32m➜[39m  [1mLocal[22m:   [36mhttp://127.0.0.1:[1m5173[22m/[39m
+[2m7:52:17 am[22m [36m[1m[vite][22m[39m [32mhmr update [39m[2m/src/context/AuthContext.jsx, /src/index.css, /src/pages/ManageUsers.jsx, /src/pages/ManageQuestions.jsx, /src/pages/AdminDashboard.jsx, /src/pages/QuizList.jsx, /src/pages/Leaderboard.jsx, /src/pages/ManageQuizzes.jsx, /src/pages/QuizDetails.jsx, /src/pages/AttemptHistory.jsx, /src/pages/Result.jsx, /src/pages/QuizAttempt.jsx, /src/pages/StudentDashboard.jsx, /src/pages/ManageCategories.jsx[22m
